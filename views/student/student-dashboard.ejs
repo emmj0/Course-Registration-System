@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard</title>
+  <script defer src="/js/student-dashboard.js"></script>
+  <link rel="stylesheet" href="/css/student-dashboard.css">
+</head>
+
+<body>
+  <div class="container">
+    <h2>Welcome to the Student Dashboard</h2>
+
+    <!-- Register for a Course -->
+    <div class="form-container">
+      <h3>Register for a Course</h3>
+      <form id="registerCourseForm">
+        <label for="rollNumber">Roll Number:</label>
+        <input type="text" id="rollNumber" name="rollNumber" placeholder="e.g., 22f-3650" required>
+
+        <label for="courseSelect">Select Course:</label>
+        <select id="courseSelect" required>
+          <option value="">Select a course</option>
+        </select>
+
+        <button type="submit">Register</button>
+      </form>
+    </div>
+
+    <hr>
+
+    <!-- Show all available courses -->
+    <div class="course-list">
+      <h3>All Available Courses</h3>
+      <ul id="courseList"></ul>
+    </div>
+  </div>
+</body>
+
+</html>

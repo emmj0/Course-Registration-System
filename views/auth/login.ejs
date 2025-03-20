@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="/css/Login.css">
+</head>
+
+<body>
+
+    <div class="login-container">
+        <h2>Login</h2>
+
+        <div>
+            <button id="studentLoginBtn">Student Login</button>
+            <button id="adminLoginBtn">Admin Login</button>
+        </div>
+
+        <form id="loginForm">
+            <div id="formFields">
+
+            </div>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginForm = document.getElementById('loginForm');
+            const formFields = document.getElementById('formFields');
+            let userType = '';
+
+            document.getElementById('studentLoginBtn').addEventListener('click', () => {
+                userType = 'student';
+                formFields.innerHTML = `
+            <label for="rollNumber">Roll Number:</label>
+            <input type="text" id="rollNumber" name="rollNumber" required>
+        `;
+            });
+
+            document.getElementById('adminLoginBtn').addEventListener('click', () => {
+                userType = 'admin';
+                formFields.innerHTML = `
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        `;
+            });
+
+            loginForm.addEventListener('submit', async (event) => {
+                event.preventDefault();
+
+                let payload = {};
+                let endpoint = '';
+
+                if (userType === 'student') {
+                    const rollNumber = document.getElementById('rollNumber').value;
+                    payload = { rollNumber };
+                    endpoint = 'http://localhost:5000/auth/student/login';
+                } else if (userType === 'admin') {
+                    const username = document.getElementById('username').value;
+                    const password = document.getElementById('password').value;
+                    payload = { username, password };
+                    endpoint = 'http://localhost:5000/auth/admin/login';
+                } else {
+                    alert("Please select a login type!");
+                    return;
+                }
+
+                try {
+                    const response = await fetch(endpoint, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload),
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok) { // Check if the login was successful
+                        if (userType === 'student') {
+                            localStorage.setItem("rollNumber", data.rollNumber); // Store roll number
+                            window.location.href = '/student-dashboard';
+                        } else {
+                            window.location.href = '/admin-dashboard';
+                        }
+                    } else {
+                        alert(data.message || 'Invalid credentials');
+                    }
+                } catch (error) {
+                    console.error("Login error:", error);
+                }
+            });
+        });
+
+        const loginForm = document.getElementById('loginForm');
+        const formFields = document.getElementById('formFields');
+        let userType = '';
+
+        document.getElementById('studentLoginBtn').addEventListener('click', () => {
+            userType = 'student';
+            formFields.innerHTML = `
+                <label for="rollNumber">Roll Number:</label>
+                <input type="text" id="rollNumber" name="rollNumber" required>
+            `;
+        });
+
+        document.getElementById('adminLoginBtn').addEventListener('click', () => {
+            userType = 'admin';
+            formFields.innerHTML = `
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            `;
+        });
+
+        loginForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            let payload = {};
+            let endpoint = '';
+
+            if (userType === 'student') {
+                const rollNumber = document.getElementById('rollNumber').value;
+                payload = { rollNumber };
+                if (data.rollNumber) {
+                    endpoint = 'http://localhost:5000/auth/student/login';
+                }
+
+                localStorage.setItem("rollNumber", data.rollNumber);
+            } else if (userType === 'admin') {
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                payload = { username, password };
+                endpoint = 'http://localhost:5000/auth/admin/login';
+            } else {
+                alert("Please select a login type!");
+                return;
+            }
+
+            try {
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                });
+
+                const data = await response.json();
+
+                if (data.message === "Login successful") {
+                    if (userType === 'student') {
+                        window.location.href = '/student-dashboard';
+                    } else {
+                        window.location.href = '/admin-dashboard';
+                    }
+                } else {
+                    alert('Invalid credentials');
+                }
+            } catch (error) {
+                console.error("Login error:", error);
+            }
+        });
+    </script>
+</body>
+
+</html>
