@@ -1,31 +1,31 @@
 document.addEventListener("DOMContentLoaded", () => {
+
     const addCourseForm = document.getElementById("addCourseForm");
     const courseList = document.getElementById("courseList");
     const prerequisitesSelect = document.getElementById("prerequisites");
     const AddCourses = document.getElementById("AddCourses");
-
     const generateReportButton = document.getElementById("generateReport");
+
     generateReportButton.addEventListener("click", fetchReports);
 
-    
+    // Register Student as Admin
     document.getElementById("registerStudentForm").addEventListener("submit", async (event) => {
         event.preventDefault();
-    
         console.log("Clicked");
         const rollNumber = document.getElementById("rollNumber").value;
+
         console.log(rollNumber);
-    
-        // Get selected course IDs
+
         const selectedOptions = Array.from(AddCourses.selectedOptions);
         const Courses = selectedOptions.map(option => option.value);
 
         console.log(Courses);
-    
-        if (Courses.length === 0) { // Use Courses instead of selectedCourseIds
+
+        if (Courses.length === 0) {
             alert("Please select at least one course.");
             return;
         }
-    
+
         try {
             const courseData = Courses.length === 1 ? Courses[0] : Courses;
             const response = await fetch("http://localhost:5000/admin/registerStudent", {
@@ -33,63 +33,59 @@ document.addEventListener("DOMContentLoaded", () => {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ rollNumber, courseData }), // Send courseId in request
+                body: JSON.stringify({ rollNumber, courseData }),
             });
             console.log({ rollNumber, courseData })
-    
+
             const data = await response.json();
             alert(data.msg);
-    
-            fetchStudents(); // Refresh student list after registration
+            fetchStudents();
         } catch (error) {
             console.error("Error registering student:", error);
         }
     });
-    // Function to fetch and display courses in the dropdown
+
+    // To fetch courses for dropdowns
     function fetchCourses() {
         fetch("http://localhost:5000/admin/getCourse")
             .then(response => response.json())
             .then(courses => {
                 courseList.innerHTML = "";
-                prerequisitesSelect.innerHTML = '<option value="">Select prerequisite courses</option>'; // Reset dropdown
-                AddCourses.innerHTML = '<option value="">Select courses</option>'; // Reset dropdown
-    
+                prerequisitesSelect.innerHTML = '<option value="">Select prerequisite courses</option>';
+                AddCourses.innerHTML = '<option value="">Select courses</option>';
+
                 courses.forEach(course => {
-                    // Add courses to the list
                     const li = document.createElement("li");
                     li.textContent = `${course.name} - ${course.department} (${course.level})`;
-    
-                    // Add buttons for delete, update, and adjust seats
+
                     const buttonContainer = document.createElement("div");
                     buttonContainer.className = "button-container";
-    
+
                     const deleteButton = document.createElement("button");
                     deleteButton.textContent = "Delete";
                     deleteButton.onclick = () => deleteCourse(course._id);
                     buttonContainer.appendChild(deleteButton);
-    
+
                     const updateButton = document.createElement("button");
                     updateButton.textContent = "Update";
                     updateButton.onclick = () => showUpdateForm(course);
                     buttonContainer.appendChild(updateButton);
-    
+
                     const adjustSeatsButton = document.createElement("button");
                     adjustSeatsButton.textContent = "Adjust Seats";
                     adjustSeatsButton.onclick = () => showAdjustSeatsForm(course);
                     buttonContainer.appendChild(adjustSeatsButton);
-    
+
                     li.appendChild(buttonContainer);
                     courseList.appendChild(li);
-    
-                    // Add courses to the prerequisites dropdown
+
                     const prerequisiteOption = document.createElement("option");
-                    prerequisiteOption.value = course._id; // Store ObjectId
+                    prerequisiteOption.value = course._id;
                     prerequisiteOption.textContent = course.name;
                     prerequisitesSelect.appendChild(prerequisiteOption);
-    
-                    // Add courses to the AddCourses dropdown
+
                     const addCoursesOption = document.createElement("option");
-                    addCoursesOption.value = course._id; // Store ObjectId
+                    addCoursesOption.value = course._id;
                     addCoursesOption.textContent = course.name;
                     AddCourses.appendChild(addCoursesOption);
                 });
@@ -97,10 +93,9 @@ document.addEventListener("DOMContentLoaded", () => {
             .catch(error => console.error("Error fetching courses:", error));
     }
 
-    // Call fetchCourses on page load
     fetchCourses();
 
-    // Add Course Form Submission
+    // Dynamic Course Form
     addCourseForm.addEventListener("submit", (event) => {
         event.preventDefault();
 
@@ -111,7 +106,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const days = document.getElementById("days").value;
         const seats = document.getElementById("seats").value;
 
-        // Get selected prerequisite ObjectIds
         const selectedOptions = Array.from(prerequisitesSelect.selectedOptions);
         const prerequisites = selectedOptions.map(option => option.value);
 
@@ -127,13 +121,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 time,
                 days,
                 seats: Number(seats),
-                prerequisites, // Send as an array of ObjectIds
+                prerequisites,
             }),
         })
             .then(response => response.json())
             .then(data => {
                 alert(data.msg);
-                fetchCourses(); // Refresh course list after adding
+                fetchCourses();
             })
             .catch(error => console.error("Error adding course:", error));
     });
@@ -147,7 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 .then(response => response.json())
                 .then(data => {
                     alert(data.msg);
-                    fetchCourses(); // Refresh course list after deletion
+                    fetchCourses();
                 })
                 .catch(error => console.error("Error deleting course:", error));
         }
@@ -178,7 +172,6 @@ document.addEventListener("DOMContentLoaded", () => {
         updateForm.addEventListener("submit", (event) => {
             event.preventDefault();
 
-            // Fetch values correctly
             const name = document.getElementById("update-name").value;
             const department = document.getElementById("update-department").value;
             const level = document.getElementById("update-level").value;
@@ -204,13 +197,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 .then(data => {
                     alert(data.msg);
                     document.body.removeChild(updateForm);
-                    fetchCourses(); // Refresh course list after update
+                    fetchCourses();
                 })
                 .catch(error => console.error("Error updating course:", error));
         });
     }
 
-    // Function to fetch and display students
+    // To Fetch Students Data
     function fetchStudents() {
         fetch("http://localhost:5000/admin/getStudents")
             .then(response => response.json())
@@ -225,13 +218,9 @@ document.addEventListener("DOMContentLoaded", () => {
             })
             .catch(error => console.error("Error fetching students:", error));
     }
-    // Call fetchStudents on page load
     fetchStudents();
 
-    
-    
-
-    // Show Adjust Seats Form
+    // Adjust Seats Form
     function showAdjustSeatsForm(course) {
         const adjustSeatsForm = document.createElement("form");
         adjustSeatsForm.id = "adjustSeatsForm";
@@ -259,7 +248,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 .then(data => {
                     alert(data.msg);
                     document.body.removeChild(adjustSeatsForm);
-                    fetchCourses(); // Refresh course list after adjustment
+                    fetchCourses();
                 })
                 .catch(error => console.error("Error adjusting seats:", error));
         });
@@ -267,75 +256,71 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function fetchReports() {
         console.log("Fetching reports...");
-    
+
         try {
-            // Fetch both reports and courses concurrently
             const [reportsResponse, coursesResponse] = await Promise.all([
                 fetch("http://localhost:5000/admin/getReports"),
                 fetch("http://localhost:5000/admin/getCourse")
             ]);
-    
+
             const reports = await reportsResponse.json();
             const courses = await coursesResponse.json();
-    
-            console.log("Full API Response:", reports); // 🛠 Debugging: Check API response
-    
+
+            console.log("Full API Response:", reports);
+
             const reportDiv = document.getElementById("report");
-            reportDiv.innerHTML = ""; // Clear previous reports
-    
-            // Display registered students
+            reportDiv.innerHTML = "";
+
             if (Array.isArray(reports.registeredStudents)) {
                 const registeredStudentsList = document.createElement("ul");
                 registeredStudentsList.innerHTML = "<h4>Registered Students</h4>";
-    
+
                 reports.registeredStudents.forEach(student => {
                     const li = document.createElement("li");
                     li.textContent = `Roll Number: ${student.rollNumber}`;
                     registeredStudentsList.appendChild(li);
                 });
-    
+
                 reportDiv.appendChild(registeredStudentsList);
             } else {
-                console.error("⚠️ Invalid registeredStudents data:", reports.registeredStudents);
+                console.error("Invalid registeredStudents data:", reports.registeredStudents);
             }
-    
-            // Display available courses
+
             if (Array.isArray(reports.availableCourses)) {
                 const availableCoursesList = document.createElement("ul");
                 availableCoursesList.innerHTML = "<h4>Available Courses</h4>";
-    
+
                 reports.availableCourses.forEach(course => {
                     const li = document.createElement("li");
                     li.textContent = `${course.name} - ${course.department} (${course.level})`;
                     availableCoursesList.appendChild(li);
                 });
-    
+
                 reportDiv.appendChild(availableCoursesList);
             } else {
-                console.error("⚠️ Invalid availableCourses data:", reports.availableCourses);
+                console.error("Invalid availableCourses data:", reports.availableCourses);
             }
-    
-            // 🛠 Fix: Ensure studentsWithoutPrerequisites exists
-            const studentsKey = reports.studentsWithoutPrerequisites 
-                ? "studentsWithoutPrerequisites" 
-                : "UnregisteredStudents"; // Fallback if naming is different
-    
+
+            const studentsKey = reports.studentsWithoutPrerequisites
+                ? "studentsWithoutPrerequisites"
+                : "UnregisteredStudents";
+
             if (Array.isArray(reports[studentsKey])) {
                 const studentsWithoutPrerequisitesList = document.createElement("ul");
                 studentsWithoutPrerequisitesList.innerHTML = "<h4>Students Without Prerequisites</h4>";
-    
+
                 reports[studentsKey].forEach(student => {
                     const li = document.createElement("li");
                     li.textContent = `Roll Number: ${student.rollNumber}`;
                     studentsWithoutPrerequisitesList.appendChild(li);
                 });
-    
+
                 reportDiv.appendChild(studentsWithoutPrerequisitesList);
             } else {
-                console.error("⚠️ Invalid studentsWithoutPrerequisites data:", reports[studentsKey]);
+                console.error("Invalid studentsWithoutPrerequisites data:", reports[studentsKey]);
             }
         } catch (error) {
-            console.error("❌ Error fetching reports:", error);
+            console.error("Error fetching reports:", error);
         }
     }
 });
