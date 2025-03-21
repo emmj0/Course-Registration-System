@@ -18,8 +18,20 @@ exports.addCourse = async (req, res) => {
     if (!student) {
       return res.status(400).json({ msg: "Student not found" });
     }
+
+    const course = await Course.findById(courseId);
+    if (!course) {
+      return res.status(400).json({ msg: "Course not found" });
+    }
+
     if (!student.registeredCourses.includes(courseId)) {
       student.registeredCourses.push(courseId);
+      student.potentialSchedule.push({
+        courseId: course._id,
+        days: course.days,
+        time: course.time
+      });
+
       await student.save();
       return res.json({ msg: "Course added successfully" });
     } else {
@@ -30,18 +42,53 @@ exports.addCourse = async (req, res) => {
   }
 };
 
-// exports.getRegisteredCourses = async (req, res) => {
-//   const { rollNumber } = req.params;
+exports.getCoursePrerequisites = async (req, res) => {
+  const { courseId } = req.params;
 
-//   try {
-//     const student = await Student.findOne({ rollNumber }).populate('registeredCourses');
+  try {
+    const course = await Course.findById(courseId).populate('prerequisites');
+    if (!course) {
+      return res.status(400).json({ msg: "Course not found" });
+    }
+    res.json(course.prerequisites);
+  } catch (err) {
+    res.status(500).json({ msg: "Server error" });
+  }
+};
 
-//     if (!student) {
-//       return res.status(400).json({ msg: "Student not found" });
-//     }
+exports.filterCourses = async (req, res) => {
+  const { department, level, time, days, openSeats } = req.query;
 
-//     res.json(student.registeredCourses); // This now returns course details, not just IDs
-//   } catch (err) {
-//     res.status(500).json({ msg: "Server error" });
-//   }
-// };
+  try {
+    const query = {};
+    if (department) query.department = department;
+    if (level) query.level = level;
+    if (time) query.time = time;
+    if (days) query.days = days;
+    if (openSeats) query.seats = { $gt: 0 };
+
+    const courses = await Course.find(query);
+    res.json(courses);
+  } catch (err) {
+    res.status(500).json({ msg: "Server error" });
+  }
+};
+
+exports.getPotentialSchedule = async (req, res) => {
+  const { rollNumber } = req.body;
+
+  try {
+    const student = await Student.findOne({ rollNumber }).populate('potentialSchedule');
+    if (!student) {
+      return res.status(400).json({ msg: "Student not found" });
+    }
+    const course = await Course.find();
+    const conflict = student.potentialSchedule.some(c => {
+      return c.time === course.time && c.days === course.days;
+    });
+    res.json(student.potentialSchedule);
+  } catch (err) {
+    res.status(500).json({ msg: "Server error" });
+  }
+};
+

@@ -20,13 +20,56 @@
         <label for="rollNumber">Roll Number:</label>
         <input type="text" id="rollNumber" name="rollNumber" placeholder="e.g., 22f-3650" required>
 
-        <label for="courseSelect">Select Course:</label>
-        <select id="courseSelect" required>
+        <label for="courseSelectRegister">Select Course:</label>
+        <select id="courseSelectRegister" required>
           <option value="">Select a course</option>
         </select>
 
         <button type="submit">Register</button>
       </form>
+    </div>
+
+    <!-- Filter Courses -->
+    <div class="form-container">
+      <h3>Filter Courses</h3>
+      <form id="filterForm">
+        <label for="department">Department:</label>
+        <input type="text" id="department" name="department">
+
+        <label for="level">Level:</label>
+        <input type="text" id="level" name="level">
+
+        <label for="time">Time:</label>
+        <input type="text" id="time" name="time">
+
+        <label for="days">Days:</label>
+        <input type="text" id="days" name="days">
+
+        <label for="openSeats">Open Seats:</label>
+        <input type="checkbox" id="openSeats" name="openSeats">
+
+        <button type="submit">Filter</button>
+      </form>
+    </div>
+
+    <!-- Fetch Course Prerequisites -->
+    <div class="form-container">
+      <h3>Fetch Course Prerequisites</h3>
+      <label for="courseSelectPrereq">Select Course:</label>
+      <select id="courseSelectPrereq" required>
+        <option value="">Select a course</option>
+      </select>
+      <button id="fetchPrerequisitesButton">Fetch Prerequisites</button>
+      <ul id="prerequisitesList"></ul>
+    </div>
+
+    <!-- Fetch Potential Schedule -->
+    <div class="form-container">
+      <h3>Potential Schedule</h3>
+      <label for="rollNumberFetch">Roll Number:</label>
+      <input type="text" id="rollNumberFetch" name="rollNumberFetch" placeholder="e.g., 22f-3650" required>
+      <button id="fetchPotentialScheduleButton">Fetch Potential Schedule</button>
+      <ul id="potentialScheduleList"></ul>
     </div>
 
     <hr>
