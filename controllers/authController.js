@@ -8,7 +8,7 @@ exports.studentLogin = async (req, res) => {
     if (!student) {
       return res.status(400).json({ msg: 'Invalid roll number' });
     }
-    res.json({ message : 'Login successful', student });
+    res.json({ message: 'Login successful', student });
   } catch (err) {
     res.status(500).json({ msg: 'Server error' });
   }
@@ -21,7 +21,7 @@ exports.adminLogin = async (req, res) => {
     if (!admin || admin.password !== password) {
       return res.status(400).json({ msg: 'Invalid username or password' });
     }
-    res.json({ message : 'Login successful', admin });
+    res.json({ message: 'Login successful', admin });
   } catch (err) {
     res.status(500).json({ msg: 'Server error' });
   }

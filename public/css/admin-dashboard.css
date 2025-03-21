@@ -1,306 +1,322 @@
 /* Modern CSS Reset */
-*, *::before, *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Variables */
+:root {
+  --primary-color: #2563eb;
+  --primary-hover: #1d4ed8;
+  --danger-color: #ef4444;
+  --danger-hover: #dc2626;
+  --success-color: #22c55e;
+  --success-hover: #16a34a;
+  --background-color: #f8fafc;
+  --surface-color: #ffffff;
+  --text-color: #1e293b;
+  --text-light: #64748b;
+  --border-color: #e2e8f0;
+  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --radius: 0.5rem;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  line-height: 1.6;
+  color: var(--text-color);
+  background-color: var(--background-color);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  color: var(--text-color);
+}
+
+h3 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  color: var(--text-color);
+}
+
+h4 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin: 1.5rem 0 1rem;
+  color: var(--text-color);
+}
+
+.form-container {
+  background-color: var(--surface-color);
+  padding: 2rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin-bottom: 2rem;
+}
+
+/* Compact form layout for Add Course */
+#addCourseForm {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+#addCourseForm label {
+  font-size: 0.875rem;
+  margin-bottom: 0.25rem;
+}
+
+#addCourseForm input,
+#addCourseForm select {
+  padding: 0.5rem;
+  font-size: 0.875rem;
+}
+
+/* Make prerequisites field full width */
+#addCourseForm label[for="prerequisites"],
+#addCourseForm select[multiple],
+#addCourseForm button[type="submit"] {
+  grid-column: 1 / -1;
+}
+
+#addCourseForm button[type="submit"] {
+  margin-top: 0.5rem;
+}
+
+/* Other forms remain in single column */
+form:not(#addCourseForm) {
+  display: grid;
+  gap: 1.25rem;
+}
+
+/* Dynamic Forms (Update & Adjust Seats) */
+#updateCourseForm,
+#adjustSeatsForm {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--surface-color);
+  padding: 2rem;
+  border-radius: var(--radius);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 500px;
+  z-index: 1000;
+}
+
+label {
+  font-weight: 500;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+select[multiple] {
+  min-height: 120px;
+}
+
+button {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+button:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+/* Button variations */
+.button-container {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.button-container button {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+
+.button-container button:nth-child(1) {
+  background-color: var(--danger-color);
+}
+
+.button-container button:nth-child(1):hover {
+  background-color: var(--danger-hover);
+}
+
+.button-container button:nth-child(2) {
+  background-color: var(--primary-color);
+}
+
+.button-container button:nth-child(2):hover {
+  background-color: var(--primary-hover);
+}
+
+.button-container button:nth-child(3) {
+  background-color: var(--success-color);
+}
+
+.button-container button:nth-child(3):hover {
+  background-color: var(--success-hover);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border-color);
+  margin: 2rem 0;
+}
+
+.course-list,
+.studentList,
+.reports {
+  background-color: var(--surface-color);
+  padding: 2rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin-bottom: 2rem;
+}
+
+ul {
+  list-style: none;
+  margin-top: 1rem;
+}
+
+li {
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  margin-bottom: 0.5rem;
+  background-color: var(--background-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+#report {
+  margin-top: 1.5rem;
+}
+
+#report ul {
+  background-color: var(--background-color);
+  padding: 1.5rem;
+  border-radius: var(--radius);
+  margin-bottom: 1.5rem;
+}
+
+#report h4 {
+  color: var(--text-color);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+#report li {
+  background-color: var(--surface-color);
+  padding: 0.75rem 1rem;
+}
+
+/* Animation for dynamic content */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
   }
-  
-  /* Variables */
-  :root {
-    --primary-color: #2563eb;
-    --primary-hover: #1d4ed8;
-    --danger-color: #ef4444;
-    --danger-hover: #dc2626;
-    --success-color: #22c55e;
-    --success-hover: #16a34a;
-    --background-color: #f8fafc;
-    --surface-color: #ffffff;
-    --text-color: #1e293b;
-    --text-light: #64748b;
-    --border-color: #e2e8f0;
-    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    --radius: 0.5rem;
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    line-height: 1.6;
-    color: var(--text-color);
-    background-color: var(--background-color);
-  }
-  
+}
+
+#courseList li,
+#studentList li,
+#report ul {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
   .container {
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 0 1.5rem;
+    padding: 0 1rem;
   }
-  
+
+  .form-container,
+  .course-list,
+  .studentList,
+  .reports {
+    padding: 1.5rem;
+  }
+
   h2 {
-    font-size: 2rem;
-    font-weight: 600;
-    margin-bottom: 2rem;
-    color: var(--text-color);
+    font-size: 1.75rem;
   }
-  
+
   h3 {
-    font-size: 1.5rem;
-    font-weight: 500;
-    margin-bottom: 1.5rem;
-    color: var(--text-color);
-  }
-  
-  h4 {
     font-size: 1.25rem;
-    font-weight: 500;
-    margin: 1.5rem 0 1rem;
-    color: var(--text-color);
   }
-  
-  .form-container {
-    background-color: var(--surface-color);
-    padding: 2rem;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    margin-bottom: 2rem;
-  }
-  
-  /* Compact form layout for Add Course */
+
+  /* Make Add Course form single column on mobile */
   #addCourseForm {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
+    grid-template-columns: 1fr;
   }
-  
-  #addCourseForm label {
-    font-size: 0.875rem;
-    margin-bottom: 0.25rem;
-  }
-  
-  #addCourseForm input,
-  #addCourseForm select {
-    padding: 0.5rem;
-    font-size: 0.875rem;
-  }
-  
-  /* Make prerequisites field full width */
+
   #addCourseForm label[for="prerequisites"],
   #addCourseForm select[multiple],
   #addCourseForm button[type="submit"] {
-    grid-column: 1 / -1;
+    grid-column: auto;
   }
-  
-  #addCourseForm button[type="submit"] {
-    margin-top: 0.5rem;
+
+  .button-container {
+    flex-direction: column;
+    width: 100%;
   }
-  
-  /* Other forms remain in single column */
-  form:not(#addCourseForm) {
-    display: grid;
-    gap: 1.25rem;
+
+  .button-container button {
+    width: 100%;
   }
-  
-  /* Dynamic Forms (Update & Adjust Seats) */
+
   #updateCourseForm,
   #adjustSeatsForm {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: var(--surface-color);
-    padding: 2rem;
-    border-radius: var(--radius);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    width: 90%;
-    max-width: 500px;
-    z-index: 1000;
-  }
-  
-  label {
-    font-weight: 500;
-    display: block;
-    margin-bottom: 0.5rem;
-  }
-  
-  input, select {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius);
-    font-size: 1rem;
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-  
-  input:focus, select:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-  }
-  
-  select[multiple] {
-    min-height: 120px;
-  }
-  
-  button {
-    background-color: var(--primary-color);
-    color: white;
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: var(--radius);
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  
-  button:hover {
-    background-color: var(--primary-hover);
-    transform: translateY(-1px);
-  }
-  
-  /* Button variations */
-  .button-container {
-    display: flex;
-    gap: 0.5rem;
-    margin-top: 0.75rem;
-  }
-  
-  .button-container button {
-    padding: 0.5rem 1rem;
-    font-size: 0.875rem;
-  }
-  
-  .button-container button:nth-child(1) {
-    background-color: var(--danger-color);
-  }
-  
-  .button-container button:nth-child(1):hover {
-    background-color: var(--danger-hover);
-  }
-  
-  .button-container button:nth-child(2) {
-    background-color: var(--primary-color);
-  }
-  
-  .button-container button:nth-child(2):hover {
-    background-color: var(--primary-hover);
-  }
-  
-  .button-container button:nth-child(3) {
-    background-color: var(--success-color);
-  }
-  
-  .button-container button:nth-child(3):hover {
-    background-color: var(--success-hover);
-  }
-  
-  hr {
-    border: none;
-    border-top: 1px solid var(--border-color);
-    margin: 2rem 0;
-  }
-  
-  .course-list, .studentList, .reports {
-    background-color: var(--surface-color);
-    padding: 2rem;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    margin-bottom: 2rem;
-  }
-  
-  ul {
-    list-style: none;
-    margin-top: 1rem;
-  }
-  
-  li {
-    padding: 1rem;
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius);
-    margin-bottom: 0.5rem;
-    background-color: var(--background-color);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-  
-  #report {
-    margin-top: 1.5rem;
-  }
-  
-  #report ul {
-    background-color: var(--background-color);
+    width: 95%;
     padding: 1.5rem;
-    border-radius: var(--radius);
-    margin-bottom: 1.5rem;
   }
-  
-  #report h4 {
-    color: var(--text-color);
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 0.5rem;
-    margin-bottom: 1rem;
-  }
-  
-  #report li {
-    background-color: var(--surface-color);
-    padding: 0.75rem 1rem;
-  }
-  
-  /* Animation for dynamic content */
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  
-  #courseList li,
-  #studentList li,
-  #report ul {
-    animation: fadeIn 0.3s ease-out;
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .container {
-      padding: 0 1rem;
-    }
-  
-    .form-container, .course-list, .studentList, .reports {
-      padding: 1.5rem;
-    }
-  
-    h2 {
-      font-size: 1.75rem;
-    }
-  
-    h3 {
-      font-size: 1.25rem;
-    }
-  
-    /* Make Add Course form single column on mobile */
-    #addCourseForm {
-      grid-template-columns: 1fr;
-    }
-  
-    #addCourseForm label[for="prerequisites"],
-    #addCourseForm select[multiple],
-    #addCourseForm button[type="submit"] {
-      grid-column: auto;
-    }
-  
-    .button-container {
-      flex-direction: column;
-      width: 100%;
-    }
-  
-    .button-container button {
-      width: 100%;
-    }
-  
-    #updateCourseForm,
-    #adjustSeatsForm {
-      width: 95%;
-      padding: 1.5rem;
-    }
-  }
+}

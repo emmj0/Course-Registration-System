@@ -1,6 +1,7 @@
 const Student = require('../models/student');
 const Course = require('../models/course');
 
+// see all courses
 exports.getCourses = async (req, res) => {
   try {
     const courses = await Course.find();
@@ -10,6 +11,7 @@ exports.getCourses = async (req, res) => {
   }
 };
 
+// register courses
 exports.addCourse = async (req, res) => {
   const { rollNumber, courseId } = req.body;
 
@@ -42,6 +44,7 @@ exports.addCourse = async (req, res) => {
   }
 };
 
+// get the pre reqs for courses
 exports.getCoursePrerequisites = async (req, res) => {
   const { courseId } = req.params;
 
@@ -56,6 +59,7 @@ exports.getCoursePrerequisites = async (req, res) => {
   }
 };
 
+// filter the courses
 exports.filterCourses = async (req, res) => {
   const { department, level, time, days, openSeats } = req.query;
 
@@ -74,6 +78,7 @@ exports.filterCourses = async (req, res) => {
   }
 };
 
+// get schedule
 exports.getPotentialSchedule = async (req, res) => {
   const { rollNumber } = req.body;
 

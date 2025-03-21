@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function displayCourses(courses) {
-        courseList.innerHTML = ""; // Clear existing course list
+        courseList.innerHTML = "";
         courses.forEach(course => {
             const li = document.createElement("li");
             li.textContent = `${course.name} - ${course.department} (${course.level})`;
@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .then(data => {
             console.log("Potential Schedule Data:", data);
-            potentialScheduleList.innerHTML = ""; // Clear existing list
+            potentialScheduleList.innerHTML = ""; 
             data.forEach(course => {
                 const li = document.createElement("li");
                 li.textContent = `Course ID: ${course.courseId}, Days: ${course.days}, Time: ${course.time}`;
@@ -120,10 +120,8 @@ document.addEventListener("DOMContentLoaded", () => {
             .catch(error => console.error("Error fetching course prerequisites:", error));
     }
 
-    // Call fetchCourses on page load
     fetchCourses();
 
-    // Register Course Form Submission
     if (registerCourseForm) {
         registerCourseForm.addEventListener("submit", (event) => {
             event.preventDefault();
@@ -159,7 +157,7 @@ document.addEventListener("DOMContentLoaded", () => {
             .then(data => {
                 console.log("Server Response:", data);
                 alert(data.msg);
-                fetchCourses(); // Refresh course list after registering
+                fetchCourses(); 
             })
             .catch(error => {
                 console.error("Error registering course:", error);
@@ -170,13 +168,13 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error("registerCourseForm not found in the DOM.");
     }
 
-    // Filter Courses Form Submission
+    
     filterForm.addEventListener("submit", (event) => {
         event.preventDefault();
         fetchFilteredCourses();
     });
 
-    // Fetch Course Prerequisites Button
+    
     document.getElementById("fetchPrerequisitesButton").addEventListener("click", () => {
         const selectedCourseId = document.getElementById("courseSelectPrereq").value;
         if (!selectedCourseId) {
@@ -186,7 +184,6 @@ document.addEventListener("DOMContentLoaded", () => {
         fetchCoursePrerequisites(selectedCourseId);
     });
 
-    // Fetch Potential Schedule Button
     document.getElementById("fetchPotentialScheduleButton").addEventListener("click", () => {
         fetchPotentialSchedule();
     });

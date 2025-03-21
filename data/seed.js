@@ -1,7 +1,6 @@
-// seed.js
 const mongoose = require('mongoose');
-const Student = require('./models/student');
-const admin = require('./models/admin');
+const Student = require('../models/student');
+const admin = require('../models/admin');
 
 const connectDB = async () => {
   try {
@@ -18,7 +17,7 @@ const connectDB = async () => {
 
 const seedDB = async () => {
   await connectDB();
-  await admin.deleteMany({}); // Clear existing admin data
+  await admin.deleteMany({}); 
 
 
   const SampleAdmins = [
